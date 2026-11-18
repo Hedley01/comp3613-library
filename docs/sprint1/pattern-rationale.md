@@ -33,6 +33,7 @@ ASSIGNMENT.md names Strategy as a strong fit and asks teams to defend any altern
 | Participant | Role |
 |---|---|
 | ConflictResolutionStrategy | Interface: `resolve(incoming, existing, room, override_requested)` returns a Resolution (decision, displaced ids, rule applied, override flag, reason) |
+| Resolution | Value returned by a strategy: decision, displaced ids, rule applied, override flag, reason |
 | CapacityGuard | Checks the total headcount on the slot against room capacity (default 30) before any strategy runs |
 | EarlierRequestWins | Default: the earliest active request keeps the slot |
 | LargerCohortOverride | Used only when the coordinator explicitly requests an override, the incoming cohort is larger and the room can hold it |
@@ -40,6 +41,7 @@ ASSIGNMENT.md names Strategy as a strong fit and asks teams to defend any altern
 | ConflictPolicy | Stores which strategy is active. The administrator changes it (R9) |
 | BookingService (context) | Runs the guard, asks the strategy, applies the decision and saves the Resolution (R10 to R12) |
 | BookingRepository | New: loads and saves bookings, as the layered architecture requires |
+| RoomRepository | New: loads rooms and their capacities |
 | NotificationService | Tells the losing lecturer the outcome and the reason (R5, R16) |
 
 ## Alternatives considered
