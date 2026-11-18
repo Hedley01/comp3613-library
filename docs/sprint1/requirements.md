@@ -48,7 +48,7 @@ Exploratory interviews (Job Board x2, UWI Connect, 15 Nov 2026) were used to com
 
 | ID | Requirement | Priority | Source | Acceptance note |
 |---|---|---|---|---|
-| R1 | A lecturer can submit a workshop booking request online (course code, number of students, room, date and time slot, specific resources needed) | Must | INT-1, INT-2, INT-3 (A5, A7) | The request is saved and visible to the coordinator for review |
+| R1 | A lecturer can submit a workshop booking request online (course code, number of students, room, date, specific resources needed) | Must | INT-1, INT-2, INT-3 (A5, A7) | The request is saved and visible to the coordinator for review |
 | R2 | The system prevents two confirmed bookings for the same room and slot | Must | INT-1, INT-3 | A second confirmed booking for a taken slot is rejected |
 | R3 | The system enforces room capacity and never allows overbooking | Must | INT-1, INT-3 | A request above the room's capacity is never confirmed |
 | R4 (SPECIAL FEATURE) | When two requests want the same room and slot, the system resolves the conflict using a configurable conflict rule (for example earliest request first, larger group wins if the room can hold it, priority by course or workshop needs), not one hard-coded rule | Must | INT-1, INT-3 (A4) | The same two competing requests give different outcomes under different configured rules, and at most one request per slot is confirmed |
@@ -81,6 +81,7 @@ Exploratory interviews (Job Board x2, UWI Connect, 15 Nov 2026) were used to com
 - **A5 (discrepancy):** INT-1 and INT-3 describe booking by email today, while INT-2 describes an online request form. All three want online submission, so R1 is unaffected.
 - **A6:** INT-3 mentions notifying students affected by a cancellation. We assume students are not system users and the lecturer passes on confirmations (INT-2), so only lecturers are notified.
 - **A7:** "Specific resources" in a request is a free-text note, not a managed inventory. INT-2 does not say more.
+- **A8:** A slot (room and date) can be shared by several bookings up to the room's capacity, and a conflict occurs when a new request would exceed it. The starter's defect notes imply this, but its acceptance criteria can also be read as one booking per slot. To confirm with the coordinator.
 
 ## Still to add
 
