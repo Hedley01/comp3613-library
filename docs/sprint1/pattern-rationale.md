@@ -65,5 +65,5 @@ ASSIGNMENT.md names Strategy as a strong fit and asks teams to defend any altern
 
 ## Open questions
 
-- **Shared or exclusive slot (A8):** the starter's own defect notes say capacity should count the total already booked, so we assume a slot (room and date) can be shared up to capacity, and a conflict occurs when a new request would exceed it. Acceptance item 8 can also be read as one booking per slot. To confirm with the coordinator.
+- **Shared or exclusive slot (A8):** we decided a slot can be shared up to the room's capacity, because the starter's own defect notes say capacity should count the total already booked. Acceptance item 8 can also be read as one booking per slot. If that reading is adopted, `CapacityGuard` simplifies to a single-occupancy check and the strategies are unchanged.
 - **Course ranking:** INT-1 does not define how courses are ranked for `CoursePriority`, so Sprint 2 ships the other two strategies first.
