@@ -1,0 +1,52 @@
+@startuml
+left to right direction
+
+actor "Lecturer" as Lecturer
+actor "Library Coordinator" as Coordinator
+actor "Library Administrator" as Administrator
+
+rectangle "Library Workshop Booking System" {
+  usecase "View Room Availability" as UC_Availability
+  usecase "Submit Booking Request" as UC_Submit
+  usecase "View Booking Status" as UC_Status
+  usecase "Receive Confirmation" as UC_Confirmation
+  usecase "Receive Rejection Notice\nwith Reason" as UC_RejectionNotice
+  usecase "Resubmit with Another Time\nor Reduced Headcount" as UC_Resubmit
+  usecase "Cancel Booking" as UC_Cancel
+
+  usecase "Review Conflicting Requests" as UC_Review
+  usecase "Resolve Slot Conflict" as UC_Resolve
+  usecase "Approve or Reject Request" as UC_Decide
+  usecase "Manage Room Availability" as UC_AvailabilityManagement
+
+  usecase "Configure Rooms and Capacities" as UC_Configure
+  usecase "Set Conflict Preference" as UC_Preference
+  usecase "Handle Capacity Disputes" as UC_Disputes
+}
+
+Lecturer -- UC_Availability
+Lecturer -- UC_Submit
+Lecturer -- UC_Status
+Lecturer -- UC_Confirmation
+Lecturer -- UC_RejectionNotice
+Lecturer -- UC_Resubmit
+Lecturer -- UC_Cancel
+
+Coordinator -- UC_Review
+Coordinator -- UC_Resolve
+Coordinator -- UC_Decide
+Coordinator -- UC_AvailabilityManagement
+Coordinator -- UC_Cancel
+
+Administrator -- UC_Configure
+Administrator -- UC_Preference
+Administrator -- UC_Disputes
+
+note right of UC_Resolve
+  For requests for the same room and date,
+  earlier requests normally take priority.
+  The coordinator may explicitly override
+  for a larger cohort when room capacity permits.
+end note
+
+@enduml
