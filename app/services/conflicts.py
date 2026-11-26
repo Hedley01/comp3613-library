@@ -124,12 +124,13 @@ class ConflictResolutionStrategy(ABC):
 
 
 class LargerCohortOverride(ConflictResolutionStrategy):
-    """A larger cohort takes the places of strictly smaller cohorts.
+    """A larger cohort takes the places of strictly smaller cohorts when overridden.
 
-    It displaces as few bookings as possible: the largest smaller cohort first,
-    and among equal sizes the most recently booked first, so earlier bookings
-    are protected. If displacing every smaller cohort still leaves the slot over
-    capacity, the request is rejected and nothing changes.
+    Requires an explicit coordinator override (``override_requested=True``).
+    When approved, it displaces as few bookings as possible: the largest smaller
+    cohort first, and among equal sizes the most recently booked first, so earlier
+    bookings are protected. If displacing every smaller cohort still leaves the
+    slot over capacity, the request is rejected and nothing changes.
     """
 
     name = "larger_cohort"
@@ -149,6 +150,16 @@ class LargerCohortOverride(ConflictResolutionStrategy):
 
         if missing <= 0:
             return Resolution("accept", self.name, "room has capacity for this request")
+
+        if not override_requested:
+            return Resolution(
+                "reject",
+                self.name,
+                f"coordinator override required for larger cohort of {wanted} "
+                f"students when slot is full ({guard.occupied(existing)}/{capacity} occupied)",
+                override_used=False,
+                conflict=True,
+            )
 
         smaller = [b for b in active if int(b["headcount"]) < wanted]
         smaller.sort(key=_booked_order, reverse=True)  # latest booked first
@@ -180,7 +191,7 @@ class LargerCohortOverride(ConflictResolutionStrategy):
             self.name,
             f"larger cohort of {wanted} students takes the places of "
             f"{len(displaced)} smaller booking(s)",
-            override_used=override_requested,
+            override_used=True,
             displace_ids=tuple(displaced),
             conflict=True,
         )
