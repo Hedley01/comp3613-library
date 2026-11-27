@@ -72,18 +72,25 @@ class NotificationService:
         capacity: int,
         occupied: int,
         alternatives: list[str],
+        alternative_dates: list[str] | None = None,
     ) -> str:
-        text = (
+        parts = [
             f"Your request for {_describe(booking, room_name)} was not confirmed. "
             f"Reason: {reason}. The room holds {capacity} and {occupied} places "
             "are already booked."
-        )
+        ]
         if alternatives:
-            text += " Rooms with space that day: " + ", ".join(alternatives) + "."
+            parts.append("Rooms with space that day: " + ", ".join(alternatives) + ".")
         else:
-            text += " No other room has space that day, so try another date."
-        return text
-
+            parts.append("No other room has space that day.")
+        if alternative_dates:
+            parts.append(
+                "Dates with space in this room: " + ", ".join(alternative_dates) + "."
+            )
+        elif not alternatives:
+            parts.append("Please try another date.")
+        return " ".join(parts)
+    
     @staticmethod
     def displaced_message(booking: dict[str, Any], room_name: str, reason: str) -> str:
         return (
@@ -92,15 +99,18 @@ class NotificationService:
         )
 
     @staticmethod
-    def approved_message(booking: dict[str, Any], room_name: str) -> str:
-        return (
-            f"Your request for {_describe(booking, room_name)} was approved by the "
-            f"coordinator. Confirmation code: {booking.get('confirmation_code')}."
-        )
-
-    @staticmethod
-    def cancelled_message(booking: dict[str, Any], room_name: str, role: str) -> str:
-        return (
-            f"Your booking for {_describe(booking, room_name)} was cancelled by "
-            f"the {role}. Please book another room or date if you still need one."
-        )
+    def cancelled_message(
+        booking: dict[str, Any],
+        room_name: str,
+        role: str,
+        reason: str | None = None,
+        alternatives: list[str] | None = None,
+    ) -> str:
+        text = f"Your booking for {_describe(booking, room_name)} was cancelled by the {role}."
+        if reason:
+            text += f" Reason: {reason}."
+        if alternatives:
+            text += " Rooms with space that day: " + ", ".join(alternatives) + "."
+        else:
+            text += " Please book another room or date if you still need one."
+        return text
